@@ -1,0 +1,6 @@
+github.com/Telmate/proxmox-api-go v0.0.0-20230616173359-03f4e428f6c6 h1:GxLbCCxjuuJTVRq7FcYBN3Jif6/x2hZG4y+IdTp36Y8=
+github.com/Telmate/proxmox-api-go v0.0.0-20230616173359-03f4e428f6c6/go.mod h1:HKwnwBcgJxT+UjTUyRP7+aDxXSgu0kLWvlrRhd4i1YU=
+github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
+github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
+github.com/stretchr/testify v1.8.2 h1:+h33VjcLVPDHtOdpUCuF+7gSuG3yGIftsP1YvFihtJ8=
+gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
