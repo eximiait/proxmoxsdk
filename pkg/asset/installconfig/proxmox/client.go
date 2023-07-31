@@ -1,7 +1,7 @@
 package proxmox_installconfig
 
 import (
-	proxmox_wrapper "github.com/eximiait/proxmox_installer/pkg/wrapper"
+	proxmox_wrapper "github.com/eximiait/proxmoxsdk/pkg/wrapper"
 	"github.com/pkg/errors"
 )
 

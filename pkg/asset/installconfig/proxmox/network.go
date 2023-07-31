@@ -7,8 +7,8 @@ import (
 
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/AlecAivazis/survey/v2/core"
-	proxmox_types "github.com/eximiait/proxmox_installer/pkg/types/proxmox"
-	proxmox_wrapper "github.com/eximiait/proxmox_installer/pkg/wrapper"
+	proxmox_types "github.com/eximiait/proxmoxsdk/pkg/types/proxmox"
+	proxmox_wrapper "github.com/eximiait/proxmoxsdk/pkg/wrapper"
 )
 
 func askNetwork(c *proxmox_wrapper.Connection, p *proxmox_types.Platform) error {

@@ -1,4 +1,4 @@
-module github.com/eximiait/proxmox_installer
+module github.com/eximiait/proxmoxsdk
 
 go 1.20
 

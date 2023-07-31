@@ -1,8 +1,8 @@
 package proxmox_installconfig
 
 import (
-	proxmox "github.com/eximiait/proxmox_installer/pkg/types/proxmox"
-	proxmox_wrapper "github.com/eximiait/proxmox_installer/pkg/wrapper"
+	proxmox "github.com/eximiait/proxmoxsdk/pkg/types/proxmox"
+	proxmox_wrapper "github.com/eximiait/proxmoxsdk/pkg/wrapper"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )

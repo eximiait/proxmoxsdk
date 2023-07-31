@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	proxmox_installconfig "github.com/eximiait/proxmox_installer/pkg/asset/installconfig"
+	proxmox_installconfig "github.com/eximiait/proxmoxsdk/pkg/asset/installconfig/proxmox"
 )
 
 func main() {
