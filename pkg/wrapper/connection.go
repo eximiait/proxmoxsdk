@@ -1,10 +1,11 @@
-package proxmoxsdk
+package proxmox_wrapper
 
 import (
-	"errors"
+	"crypto/tls"
 	"net/url"
 
-	proxmox_api_go "github.com/Telmate/proxmox-api-go/proxmox"
+	proxmoxsdk "github.com/Telmate/proxmox-api-go/proxmox"
+	"github.com/pkg/errors"
 )
 
 // LogFunc represents a flexiable and injectable logger function which fits to most of logger libraries
@@ -17,12 +18,12 @@ type Connection struct {
 	url      *url.URL
 	username string
 	password string
+	//headers  string
 	// Debug options
 	logFunc LogFunc
 	timeout int
-	// proxmox_api_go.Client client
-	client  *proxmox_api_go.Client
-	headers map[string]string
+	// http client
+	client *proxmoxsdk.Client
 }
 
 // URL returns the base URL of this connection.
@@ -30,31 +31,18 @@ func (c *Connection) URL() string {
 	return c.url.String()
 }
 
+func (c *Connection) Client() *proxmoxsdk.Client {
+	return c.client
+}
+
 // Test tests the connectivity with the server using the system service.
 func (c *Connection) Test() error {
-	/*_, err := c.SystemService().Get().Send()
-	if err != nil {
-		return fmt.Errorf("failed to validate the connection (%w)", err)
-	}*/
-	return nil
+	return c.client.Login(c.username, c.password, "")
 }
 
-// authenticate uses OAuth to do authentication
-func (c *Connection) authenticate() (string, error) {
-	/*if c.ssoToken == "" {
-		token, err := c.getAccessToken()
-		if err != nil {
-			return "", err
-		}
-		c.ssoToken = token
-	}*/
-	//return c.ssoToken, nil
-	return "", nil
-}
-
+// @TODO ver como cerrar
 // Close releases the resources used by this connection.
 func (c *Connection) Close() error {
-	//return c.CloseIfRevokeSSOToken(true)
 	return nil
 }
 
@@ -99,6 +87,22 @@ func (connBuilder *ConnectionBuilder) Username(username string) *ConnectionBuild
 	return connBuilder
 }
 
+// Client sets the client field for `Connection` instance
+func (connBuilder *ConnectionBuilder) Client(engine_api string) *ConnectionBuilder {
+	// If already has errors, just return
+	var err error
+	if connBuilder.err != nil {
+		return connBuilder
+	}
+	tlsconf := &tls.Config{InsecureSkipVerify: true}
+	connBuilder.conn.client, err = proxmoxsdk.NewClient(engine_api, nil, "", tlsconf, "", 300)
+	if err != nil {
+		connBuilder.err = err
+		return connBuilder
+	}
+	return connBuilder
+}
+
 // Password sets the password field for `Connection` instance
 func (connBuilder *ConnectionBuilder) Password(password string) *ConnectionBuilder {
 	// If already has errors, just return
@@ -131,7 +135,7 @@ func (connBuilder *ConnectionBuilder) Timeout(timeout int) *ConnectionBuilder {
 }
 
 // Headers sets a map of custom HTTP headers to be added to each HTTP request
-func (connBuilder *ConnectionBuilder) Headers(headers map[string]string) *ConnectionBuilder {
+/*func (connBuilder *ConnectionBuilder) Headers(headers map[string]string) *ConnectionBuilder {
 	// If already has errors, just return
 	if connBuilder.err != nil {
 		return connBuilder
@@ -145,11 +149,12 @@ func (connBuilder *ConnectionBuilder) Headers(headers map[string]string) *Connec
 		connBuilder.conn.headers[hk] = hv
 	}
 	return connBuilder
-}
+}*/
 
 // Build constructs the `Connection` instance
 func (connBuilder *ConnectionBuilder) Build() (*Connection, error) {
 	// If already has errors, just return
+
 	if connBuilder.err != nil {
 		return nil, connBuilder.err
 	}
@@ -163,13 +168,6 @@ func (connBuilder *ConnectionBuilder) Build() (*Connection, error) {
 	}
 	if len(connBuilder.conn.password) == 0 {
 		return nil, errors.New("the password must not be empty")
-	}
-
-	connBuilder.conn.client = &proxmox_api_go.Client{
-		Username:    connBuilder.conn.username,
-		Password:    connBuilder.conn.password,
-		ApiUrl:      connBuilder.conn.url.Opaque,
-		TaskTimeout: connBuilder.conn.client.TaskTimeout,
 	}
 	return connBuilder.conn, nil
 }
